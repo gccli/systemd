@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo "*** starting foo service ***"
+
+while [ true ]; do
+    read -p "Waiting for stdin input: " yesno
+    yesno=$(echo -n $yesno)
+    echo "Read from stdin: [$yesno]."
+
+    if [ "${yesno}x" == "yx" ]; then
+        break
+    fi
+    sleep 1s
+done
+
+echo "foo quit with 1"
+exit 1

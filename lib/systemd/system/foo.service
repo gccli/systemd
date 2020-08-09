@@ -1,0 +1,15 @@
+[Unit]
+Description=Foo service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/foo
+Restart=on-failure
+RestartSec=1s
+
+StandardInput=socket
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,11 @@
+[Unit]
+Description=Foo Socket
+Conflicts=foo.service
+
+
+[Socket]
+ListenStream=50004
+Accept=yes
+
+[Install]
+WantedBy=sockets.target

@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+
+from socketserver import TCPServer, StreamRequestHandler
+import sys
+import socket
+import logging
+
+class Handler(StreamRequestHandler):
+    def handle(self):
+        self.data = self.rfile.readline().strip()
+        logging.info("From <%s>: %s" % (self.client_address, self.data))
+        self.wfile.write(self.data.upper() + "\r\n".encode("utf-8"))
+
+class Server(TCPServer):
+    # The constant would be better initialized by a systemd module
+    SYSTEMD_FIRST_SOCKET_FD = 0
+
+    def __init__(self, server_address, handler_cls):
+        # Invoke base but omit bind/listen steps (performed by systemd activation!)
+        TCPServer.__init__(
+            self, server_address, handler_cls, bind_and_activate=False)
+        # Override socket
+        self.socket = socket.fromfd(
+            self.SYSTEMD_FIRST_SOCKET_FD, self.address_family, self.socket_type)
+
+if __name__ == "__main__":
+    root = logging.getLogger()
+    root.setLevel(logging.DEBUG)
+
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    root.addHandler(handler)
+
+    logging.info("start server")
+    HOST, PORT = "", 50004
+    server = Server((HOST, PORT), Handler)
+    server.serve_forever()

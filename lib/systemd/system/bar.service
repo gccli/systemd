@@ -1,0 +1,18 @@
+[Unit]
+Description=Bar service
+After=network.target foo.service
+Requires=foo.service
+BindsTo=foo.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/bar
+Restart=on-failure
+RestartSec=2s
+
+# RemainAfterExit=yes
+
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target
