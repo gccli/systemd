@@ -1,14 +1,36 @@
 package main
 
 import (
+	"fmt"
+	"github.com/coreos/go-systemd/activation"
+	"github.com/coreos/go-systemd/daemon"
 	"io"
 	"net/http"
-
-	"github.com/coreos/go-systemd/activation"
+	"time"
 )
 
 func HelloServer(w http.ResponseWriter, req *http.Request) {
 	_, _ = io.WriteString(w, "hello socket activated world!\n")
+}
+
+func watchdog(timeout time.Duration) {
+	ticker := time.NewTicker(timeout)
+
+	for {
+		select {
+		case <-ticker.C:
+			_, _ = daemon.SdNotify(false, daemon.SdNotifyWatchdog)
+		}
+	}
+}
+
+func startWatchdog() {
+	timeout, err := daemon.SdWatchdogEnabled(false)
+	if err == nil {
+		fmt.Printf("Watchdog enabled: %v\n", timeout)
+		return
+	}
+	go watchdog(timeout / 2)
 }
 
 func main() {
@@ -19,6 +41,16 @@ func main() {
 
 	if len(listeners) != 1 {
 		panic("Unexpected number of socket activation fds")
+	}
+
+	if ok, err := daemon.SdNotify(false, daemon.SdNotifyReady); err != nil {
+		panic(err)
+	} else {
+		if !ok {
+			fmt.Printf("notification not supported\n")
+		} else {
+			startWatchdog()
+		}
 	}
 
 	http.HandleFunc("/", HelloServer)
