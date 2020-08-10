@@ -26,6 +26,7 @@ uninstall:
 	init q
 
 bin/gosocket:
+	systemctl stop gosocket.service
 	go build -mod vendor -o $@ examples/socket/socket.go
 
 clean:

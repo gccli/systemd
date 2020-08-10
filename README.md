@@ -16,3 +16,11 @@
 # notify and watchdog
 
 设置`Type=notify`启用notify功能设置`WatchdogSec=20`启用看门狗服务。`Restart=`设为`on-failure`
+
+## Test restart
+
+    分别测试正常退出，异常退出，crush，超时
+    curl http://127.0.0.1:50004?exit=normal
+    curl http://127.0.0.1:50004?exit=abnormal
+    curl http://127.0.0.1:50004?exit=abort
+    curl http://127.0.0.1:50004?exit=timeout

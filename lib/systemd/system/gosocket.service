@@ -6,9 +6,10 @@ After=multi-user.target
 [Service]
 Type=notify
 ExecStart=/usr/bin/gosocket
-WatchdogSec=10
+WatchdogSec=4
 Restart=on-failure
 RestartSec=3
+#NotifyAccess=exec
 
 [Install]
 WantedBy=multi-user.target
