@@ -8,11 +8,11 @@ import (
 )
 
 func HelloServer(w http.ResponseWriter, req *http.Request) {
-	io.WriteString(w, "hello socket activated world!\n")
+	_, _ = io.WriteString(w, "hello socket activated world!\n")
 }
 
 func main() {
-	listeners, err := activation.Listeners(true)
+	listeners, err := activation.Listeners()
 	if err != nil {
 		panic(err)
 	}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="5f6571ea-1be8-44c3-adfd-d3cd02df57ab" name="210" url="http://10.95.31.210">
+        <fileTransfer host="10.95.31.210" port="22" privateKey="C:\Users\lijing01\.ssh\csmpdev" rootFolder="/home/lijing/systemd" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
