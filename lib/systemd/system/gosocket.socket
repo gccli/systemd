@@ -1,0 +1,10 @@
+[Unit]
+Description=Go Http Server Socket Activation
+#Conflicts=foo.service
+
+[Socket]
+ListenStream=50004
+#Accept=yes
+
+[Install]
+WantedBy=sockets.target

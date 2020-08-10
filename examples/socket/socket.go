@@ -10,15 +10,22 @@ import (
 )
 
 func HelloServer(w http.ResponseWriter, req *http.Request) {
-	_, _ = io.WriteString(w, "hello socket activated world!\n")
+	n, err := io.WriteString(w, "hello world! socket activated.\n")
+	if err != nil {
+		fmt.Println("")
+	} else {
+		fmt.Printf("%d bytes send to client %s\n", n, req.RemoteAddr)
+	}
 }
 
 func watchdog(timeout time.Duration) {
+	fmt.Println("watchdog started.")
 	ticker := time.NewTicker(timeout)
 
 	for {
 		select {
 		case <-ticker.C:
+			fmt.Println("Send keep-alive ping")
 			_, _ = daemon.SdNotify(false, daemon.SdNotifyWatchdog)
 		}
 	}
@@ -27,10 +34,9 @@ func watchdog(timeout time.Duration) {
 func startWatchdog() {
 	timeout, err := daemon.SdWatchdogEnabled(false)
 	if err == nil {
-		fmt.Printf("Watchdog enabled: %v\n", timeout)
-		return
+		fmt.Printf("Watchdog enabled: timeout=%v\n", timeout)
+		go watchdog(timeout / 2)
 	}
-	go watchdog(timeout / 2)
 }
 
 func main() {
