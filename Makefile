@@ -23,6 +23,7 @@ uninstall:
         done
 
 	@for i in ${UNITS}; do \
+            systemctl disable $$(basename $$i); \
             x=/usr/lib/systemd/system/$$(basename $$i); \
 	    echo rm -f $$x; \
             /bin/rm -f $$x; \
@@ -30,7 +31,6 @@ uninstall:
 	init q
 
 bin/gosocket:
-	systemctl stop gosocket.service
 	go build -mod vendor -o $@ examples/socket/socket.go
 
 clean:

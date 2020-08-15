@@ -3,6 +3,7 @@
 echo "*** starting bar service ***"
 
 rm -f /tmp/bar.fifo && mkfifo /tmp/bar.fifo
+sleep 2
 systemd-notify --ready --status="Waiting for data..."
 while : ; do
     read a </tmp/bar.fifo
