@@ -1,0 +1,13 @@
+[Unit]
+Description=baz service
+After=network.target
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/baz.py 3
+
+RemainAfterExit=yes
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target

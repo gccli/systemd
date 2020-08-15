@@ -1,8 +1,12 @@
 PREFIX=/usr
 
-BINARY=bin/gosocket bin/foo bin/bar
+BINARY=bin/gosocket bin/foo bin/bar bin/baz.py bin/qux.py bin/foobar
 UNITS:=lib/systemd/system/foo.service
 UNITS+=lib/systemd/system/bar.service
+UNITS+=lib/systemd/system/baz.service
+UNITS+=lib/systemd/system/qux.service
+UNITS+=lib/systemd/system/foobar@.service
+UNITS+=lib/systemd/system/foobar.target
 UNITS+=lib/systemd/system/gosocket.socket
 UNITS+=lib/systemd/system/gosocket.service
 

@@ -1,13 +1,13 @@
 [Unit]
-Description=Bar service
-After=foo.service
+Description=qux service
+PartOf=baz.service
 
 [Service]
 Type=notify
-ExecStart=/usr/bin/bar
+ExecStart=/usr/bin/qux.py 3
 Restart=on-failure
-RestartSec=2s
 
+RemainAfterExit=yes
 StandardOutput=journal
 
 [Install]
