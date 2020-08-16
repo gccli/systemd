@@ -10,6 +10,14 @@
           <option name="port" value="22" />
         </fileTransfer>
       </webServer>
+      <webServer id="e9fff2b0-2a96-4800-b2bd-d395248b079b" name="devhk" url="http://hk.inetlinux.com">
+        <fileTransfer host="hk.inetlinux.com" port="22" privateKey="D:\Cache\ssh\keys\inetlinux" rootFolder="/root/git/systemd" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>
