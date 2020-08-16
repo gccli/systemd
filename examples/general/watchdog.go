@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/coreos/go-systemd/daemon"
+	log "github.com/sirupsen/logrus"
 	"time"
 )
 
@@ -21,10 +22,16 @@ func watchdog(timeout time.Duration) {
 	}
 }
 
-func StartWatchdog() {
+func StartWatchdog() error {
 	timeout, err := daemon.SdWatchdogEnabled(false)
-	if err == nil {
-		fmt.Printf("Watchdog enabled: timeout=%v\n", timeout)
-		go watchdog(timeout / 2)
+	if err != nil {
+		log.Errorf("Failed to check watchdog enable state: %v", err)
+		return err
 	}
+	fmt.Printf("Watchdog enabled: timeout=%v\n", timeout)
+	if timeout > 0 {
+		go watchdog(time.Second + timeout/2)
+	}
+
+	return nil
 }

@@ -15,30 +15,35 @@ import (
 func Main(ctx *cli.Context) error {
 	addr := ctx.String("listen-address")
 	listeners, err := activation.Listeners()
-	if err != nil {
-		log.Warnf("Not support socket activation, try-to listen %s", addr)
+	if err != nil || len(listeners) == 0 {
+		log.Warnf("Not support socket activation, try to listen %s", addr)
 		l, err := net.Listen("tcp", addr)
 		if err != nil {
 			log.Errorf("Can not listen address: %v", err)
 			return err
 		}
-
 		listeners = append(listeners, l)
+		log.Infof("Listen %s success", addr)
 	}
-	log.Infof("Listen %s success", addr)
+	svc := ctx.String("service")
+	delay := time.Duration(ctx.Int("delay-notify")) * time.Second
 
-	if ctx.Int("delay-notify") > 0 {
-		time.Sleep(time.Duration(ctx.Int("delay-notify")) * time.Second)
-	}
-	since:=ctx.Int("failed-until")
-	if since> 0 {
-		if uptimeElapse := UptimeSince();  uptimeElapse < since {
-			log.Fatalf("Option failed-until set, please wait %d seconds", since-uptimeElapse)
+	since := ctx.Int("failed-until")
+	if since > 0 {
+		duration := time.Duration(since) * time.Second
+		elapsed := UptimeSince()
+		log.Infof("Time elapsed since uptime %v", elapsed)
+		if elapsed < duration {
+			log.Fatalf("Option failed-until set %ds, please wait %d seconds", since, duration-elapsed)
 		}
 	}
 
+	if delay > 0 {
+		log.Infof("Service %s will delay notify after %v", svc, delay)
+		time.Sleep(delay)
+	}
 	if ok, err := daemon.SdNotify(false, daemon.SdNotifyReady); err != nil {
-		panic(err)
+		log.Fatalf("Failed to notify %v", err)
 	} else {
 		if !ok {
 			fmt.Printf("notification not supported\n")
@@ -47,6 +52,7 @@ func Main(ctx *cli.Context) error {
 		}
 	}
 
+	log.Infof("Service %s started, waiting for connection", svc)
 	http.HandleFunc("/", Handler)
 	return http.Serve(listeners[0], nil)
 }
