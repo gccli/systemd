@@ -1,18 +1,21 @@
 PREFIX=/usr
 
-BINARY=bin/gosocket bin/foo bin/bar bin/baz.py bin/qux.py bin/foobar
+srcfoobar := $(wildcard examples/general/*.go)
+srcsocket := $(wildcard examples/socket/*.go)
+
+BINARY=bin/foobar bin/socket bin/foo bin/bar
 UNITS:=lib/systemd/system/foo.service
 UNITS+=lib/systemd/system/bar.service
 UNITS+=lib/systemd/system/baz.service
 UNITS+=lib/systemd/system/qux.service
 UNITS+=lib/systemd/system/foobar@.service
 UNITS+=lib/systemd/system/foobar.target
-UNITS+=lib/systemd/system/gosocket.socket
-UNITS+=lib/systemd/system/gosocket.service
+UNITS+=lib/systemd/system/plugh.socket
+UNITS+=lib/systemd/system/plugh.service
 
 install: $(BINARY)
 	install -m 0755 $(BINARY) $(PREFIX)/bin/
-	install $(UNITS) $(PREFIX)/lib/systemd/system/
+	install -m 0644 $(UNITS)  $(PREFIX)/lib/systemd/system/
 	init q
 
 uninstall:
@@ -30,8 +33,11 @@ uninstall:
         done
 	init q
 
-bin/gosocket:
-	go build -mod vendor -o $@ examples/socket/socket.go
+bin/foobar: $(srcfoobar)
+	go build -mod vendor -o $@ $^
+
+bin/socket:$(srcsocket)
+	go build -mod vendor -o $@ $^
 
 clean:
-	$(RM) bin/gosocket
+	$(RM) bin/socket bin/foobar

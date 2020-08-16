@@ -4,10 +4,8 @@ PartOf=baz.service
 
 [Service]
 Type=notify
-ExecStart=/usr/bin/qux.py 3
+ExecStart=/usr/bin/foobar -s qux -l :9902  --delay-notify 3
 Restart=on-failure
-
-RemainAfterExit=yes
 StandardOutput=journal
 
 [Install]

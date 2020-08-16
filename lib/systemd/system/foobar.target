@@ -1,11 +1,2 @@
 [Unit]
-Description=Foo service
-After=network.target
-
-[Service]
-ExecStart=/usr/bin/foo.socket
-StandardInput=socket
-StandardOutput=journal
-
-[Install]
-WantedBy=multi-user.target
+Description=Foo Bar Baz Qux

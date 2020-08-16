@@ -3,7 +3,8 @@ Description=Foo service
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/foo.socket
+Type=notify
+ExecStart=/usr/bin/foobar -s foobar
 StandardInput=socket
 StandardOutput=journal
 

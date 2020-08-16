@@ -1,15 +1,13 @@
 [Unit]
-Description=Go Socket Activation Example
+Description=Socket Activation plugh service
 Requires=network.target
-After=multi-user.target
 
 [Service]
 Type=notify
-ExecStart=/usr/bin/gosocket
+ExecStart=/usr/bin/socket
 WatchdogSec=4
 Restart=on-failure
 RestartSec=3
-#NotifyAccess=exec
 
 [Install]
 WantedBy=multi-user.target

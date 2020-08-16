@@ -1,12 +1,12 @@
 [Unit]
 Description=baz service
-After=network.target
+Before=foobar.target
+Wants=foobar.target
 
 [Service]
 Type=notify
-ExecStart=/usr/bin/baz.py 3
-
-RemainAfterExit=yes
+ExecStart=/usr/bin/foobar -s baz -l :9901  --delay-notify 3 --failed-until 60
+Restart=on-failure
 StandardOutput=journal
 
 [Install]
