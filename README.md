@@ -1,19 +1,41 @@
-# install example
+# Examples
+
+```
+foo.service --------> bar.service (After=foo.service)
+
+             activate
+plugh.socket --------> foobar@.service
+
+              activate
+foobar.socket --------> foobar@.service
+
+
+       foobar.target
+             |  (Wants=,Before=)
+             v
+         baz.service  ------------> quuz.service
+            /  \                 (Requires=,After=)
+           /    \
+          /      \
+         /        \
+        /          \
+       v            v
+qux.service   quux.service
+ (PartOf=)   (Wants=,After=)
+
+```
+
+# Install example
 
     make install
 
-# Socket example
+## Test Socket activation
 
-    # start gosocket socket unit
-    systemctl start gosocket.socket
+    systemctl start plugh.socket       # start plugh socket unit
+    journalctl -u plugh.service -f     # monitor plugh service unit
+    curl -i http://127.0.0.1:50004     # send traffic to plugh.socket and activate plugh.service
 
-    # monitor gosocket service unit
-    journalctl -u gosocket.service -f
-
-    # send traffic to gosocket.socket
-    curl http://127.0.0.1:50004
-
-# notify and watchdog
+## notify and watchdog
 
 设置`Type=notify`启用notify功能设置`WatchdogSec=20`启用看门狗服务。`Restart=`设为`on-failure`
 
