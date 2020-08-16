@@ -1,0 +1,10 @@
+[Unit]
+Description=foobar socket
+Conflicts=foobar.service
+
+[Socket]
+ListenStream=8888
+Accept=yes
+
+[Install]
+WantedBy=sockets.target

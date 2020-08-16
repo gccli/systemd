@@ -2,7 +2,7 @@
 Description=Socket Activation plugh socket
 
 [Socket]
-ListenStream=8888
+ListenStream=50004
 #Accept=yes
 
 [Install]

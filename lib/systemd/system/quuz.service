@@ -1,0 +1,13 @@
+[Unit]
+Description=quuz service
+Requires=baz.service
+After=baz.service
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/foobar -s quuz -l :9904  --delay-notify 3
+Restart=on-failure
+StandardOutput=journal
+
+[Install]
+WantedBy=foobar.target

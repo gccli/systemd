@@ -9,4 +9,4 @@ Restart=on-failure
 StandardOutput=journal
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=foobar.target
