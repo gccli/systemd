@@ -25,6 +25,8 @@ qux.service   quux.service
 
 ```
 
+* Before=,Wants= https://unix.stackexchange.com/questions/507702/before-and-want-for-the-same-systemd-service
+
 # Install example
 
     make install

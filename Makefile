@@ -4,12 +4,14 @@ srcfoobar := $(wildcard examples/general/*.go)
 srcsocket := $(wildcard examples/socket/*.go)
 
 BINARY=bin/foobar bin/socket bin/foo bin/bar
-UNITS:=lib/systemd/system/foo.service
+UNITS:=lib/systemd/system/foobar.target
+UNITS+=lib/systemd/system/foobar@.service
+UNITS_=lib/systemd/system/foo.service
 UNITS+=lib/systemd/system/bar.service
 UNITS+=lib/systemd/system/baz.service
 UNITS+=lib/systemd/system/qux.service
-UNITS+=lib/systemd/system/foobar@.service
-UNITS+=lib/systemd/system/foobar.target
+UNITS+=lib/systemd/system/quux.service
+UNITS+=lib/systemd/system/quuz.service
 UNITS+=lib/systemd/system/plugh.socket
 UNITS+=lib/systemd/system/plugh.service
 
