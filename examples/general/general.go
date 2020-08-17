@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/coreos/go-systemd/activation"
 	"github.com/coreos/go-systemd/daemon"
 	log "github.com/sirupsen/logrus"
@@ -46,7 +45,7 @@ func Main(ctx *cli.Context) error {
 		log.Fatalf("Failed to notify %v", err)
 	} else {
 		if !ok {
-			fmt.Printf("notification not supported\n")
+			log.Warn("Systemd notification not supported")
 		} else {
 			StartWatchdog()
 		}
@@ -66,7 +65,7 @@ func main() {
 	app := cli.NewApp()
 	app.Version = "1.0.0"
 	app.Name = "General"
-	app.Flags = [] cli.Flag{
+	app.Flags = []cli.Flag{
 		&cli.StringFlag{Name: "service", Aliases: []string{"s"}},
 		&cli.StringFlag{Name: "listen-address", Value: ":8888", Aliases: []string{"l"}},
 		&cli.IntFlag{Name: "delay-notify", Value: 0, Aliases: []string{"delay"}},
